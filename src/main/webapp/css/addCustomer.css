@@ -1,0 +1,102 @@
+/* Page layout */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #121212;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Page title at top */
+header {
+    text-align: center;
+    padding: 20px;
+}
+
+header h2 {
+    margin: 0;
+    font-size: 26px;
+    color: #fff;
+}
+
+/* Centered form area */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    background: #1e1e1e;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.7);
+}
+
+/* Labels + Inputs */
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #bbb;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 6px;
+    background: #2a2a2a;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    background: #333;
+}
+
+/* Save button */
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #64b5f6;
+    color: #121212;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+input[type="submit"]:hover {
+    background: #42a5f5;
+    transform: translateY(-2px);
+}
+
+/* Footer links at bottom */
+footer {
+    text-align: center;
+    padding: 15px;
+}
+
+footer a {
+    color: #64b5f6;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: #42a5f5;
+}
