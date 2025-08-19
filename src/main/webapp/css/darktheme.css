@@ -1,0 +1,59 @@
+/* Dark theme base */
+body {
+    background-color: #121212;  /* black background */
+    color: #e0e0e0;            /* light gray text */
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
+    color: #ffffff;
+}
+
+/* Links */
+a {
+    color: #64b5f6;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1e1e1e;
+    color: #e0e0e0;
+}
+table, th, td {
+    border: 1px solid #333;
+}
+th {
+    background: #333;
+    color: #ffffff;
+}
+td {
+    padding: 8px;
+}
+
+/* Forms */
+input, select, textarea, button {
+    background: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #64b5f6;
+}
+button {
+    cursor: pointer;
+    background: #333;
+}
+button:hover {
+    background: #444;
+}
