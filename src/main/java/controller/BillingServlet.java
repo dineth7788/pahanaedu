@@ -1,69 +1,79 @@
 package controller;
 
+import dao.CustomerDAO;
+import dao.ItemDAO;
+import dao.BillDAO;
+import model.Customer;
+import model.Item;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.*;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.List;
 
-@WebServlet("/BillingServlet")
+@WebServlet("/createBill")
 public class BillingServlet extends HttpServlet {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/your_database";
-    private static final String DB_USER = "root";
-    private static final String DB_PASS = "your_password";
+    private CustomerDAO customerDAO;
+    private ItemDAO itemDAO;
+    private BillDAO billDAO;
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int customerId = Integer.parseInt(request.getParameter("customer_id"));
-        int itemId = Integer.parseInt(request.getParameter("item_id"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
+    public void init() {
+        customerDAO = new CustomerDAO();
+        itemDAO = new ItemDAO();
+        billDAO = new BillDAO();
+    }
 
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            List<Customer> customers = customerDAO.getAllCustomers();
+            List<Item> items = itemDAO.getAllItems();
+            req.setAttribute("customers", customers);
+            req.setAttribute("items", items);
 
-            // Get item price
-            double price = 0;
-            String priceQuery = "SELECT price FROM items WHERE id = ?";
-            ps = con.prepareStatement(priceQuery);
-            ps.setInt(1, itemId);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                price = rs.getDouble("price");
-            }
-            rs.close();
-            ps.close();
-
-            // Calculate total
-            double total = price * quantity;
-
-            // Insert bill into DB
-            String insertQuery = "INSERT INTO bills (customer_id, item_id, quantity, total, status) VALUES (?, ?, ?, ?, ?)";
-            ps = con.prepareStatement(insertQuery);
-            ps.setInt(1, customerId);
-            ps.setInt(2, itemId);
-            ps.setInt(3, quantity);
-            ps.setDouble(4, total);
-            ps.setString(5, "PENDING");
-            ps.executeUpdate();
-
-            // Redirect to view bills
-            response.sendRedirect("viewBills.jsp");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ServletException(e);
-        } finally {
-            try { if (rs != null) rs.close(); } catch (Exception ignored) {}
-            try { if (ps != null) ps.close(); } catch (Exception ignored) {}
-            try { if (con != null) con.close(); } catch (Exception ignored) {}
+            RequestDispatcher dispatcher = req.getRequestDispatcher("createBill.jsp");
+            dispatcher.forward(req, resp);
+        } catch (SQLException e) {
+            throw new ServletException("Error loading Create Bill form data", e);
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        try {
+            processBill(req);
+            resp.sendRedirect("viewBills");
+        } catch (NumberFormatException e) {
+            throw new ServletException("Invalid numeric input", e);
+        } catch (SQLException e) {
+            throw new ServletException("Database error while creating bill", e);
+        }
+    }
+
+    /**
+     * Shared bill creation logic to avoid duplicate code.
+     */
+    private void processBill(HttpServletRequest req) throws SQLException, ServletException {
+        int customerId = Integer.parseInt(req.getParameter("customer_id"));
+        int itemId = Integer.parseInt(req.getParameter("item_id"));
+        int quantity = Integer.parseInt(req.getParameter("quantity"));
+
+        BigDecimal price = itemDAO.findPriceById(itemId);
+        if (price == null) {
+            throw new ServletException("Selected item not found");
+        }
+
+        BigDecimal total = price.multiply(BigDecimal.valueOf(quantity));
+        billDAO.createBill(customerId, itemId, quantity, total);
     }
 }
