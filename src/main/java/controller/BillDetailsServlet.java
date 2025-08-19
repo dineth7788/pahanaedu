@@ -1,7 +1,7 @@
 package controller;
 
 import dao.BillDAO;
-import com.pahanaedu.model.BillDetails;
+import model.BillDetails;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

@@ -1,6 +1,6 @@
 package dao;
 
-import com.pahanaedu.model.BillDetails;
+import model.BillDetails;
 import util.DBUtil;
 
 import java.math.BigDecimal;
