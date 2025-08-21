@@ -1,0 +1,16 @@
+.container { max-width: 980px; margin: 24px auto; background:#fff; padding:20px; border-radius:14px; box-shadow:0 6px 24px rgba(0,0,0,.06); }
+h1,h2 { margin:0 0 14px; }
+.row { display:flex; gap:10px; align-items:center; margin:10px 0; flex-wrap:wrap; }
+.inline { display:inline-flex; gap:8px; align-items:center; }
+.right { margin-left:auto; }
+.table { width:100%; border-collapse: collapse; margin-top:12px; }
+.table th, .table td { border:1px solid #e6e8ee; padding:8px; }
+.table thead { background:#f5f6fa; }
+.center { text-align:center; }
+.right { text-align:right; }
+.mt { margin-top:16px; }
+.error { background:#ffe6e6; color:#a40000; padding:8px 12px; border-radius:8px; }
+.primary { background:#2e7dff; color:#fff; border:none; padding:8px 14px; border-radius:10px; cursor:pointer; }
+.danger { background:#ff4d4f; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; }
+.muted { color:#6b7280; }
+button[disabled] { opacity: .55; cursor:not-allowed; }
